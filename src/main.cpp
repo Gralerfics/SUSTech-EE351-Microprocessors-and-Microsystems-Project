@@ -3,7 +3,8 @@
 #include <chrono>
 #include <thread>
 
-#include "JetsonGPIO.h"
+#include "wiringPi.h"
+
 #include "lcd.h"
 
 static bool shutdown = false;
@@ -15,12 +16,11 @@ void sigint_handler(int signum) {
 int main(int argc, char** argv) {
     signal(SIGINT, sigint_handler);
 
-    GPIO::setmode(GPIO::BOARD);
-    
-    LCDController lcd(16, 18, 23, 19, 21, 240, 320);
+    if (wiringPiSetupGpio() == -1) return -1;
+
+    LCDController lcd(23, 24, 11, 10, 9, 240, 320);
     lcd.init();
     std::cout << "Finished." << std::endl;
-    // lcd.canvas_clear(lcd.color_from_rgb(128, 128, 128));
 
     return 0;
 }

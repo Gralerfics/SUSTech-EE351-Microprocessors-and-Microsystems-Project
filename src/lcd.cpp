@@ -2,7 +2,8 @@
 
 #include <chrono>
 #include <thread>
-#include "JetsonGPIO.h"
+
+#include "wiringPi.h"
 
 LCDController::LCDController(int io_rs, int io_rst, int io_sck, int io_mosi, int io_miso, int canonical_width, int canonical_height) {
     this->io_rs = io_rs;
@@ -14,13 +15,13 @@ LCDController::LCDController(int io_rs, int io_rst, int io_sck, int io_mosi, int
     this->width = canonical_width;
     this->height = canonical_height;
 
-    GPIO::setup(this->io_rs, GPIO::OUT, GPIO::LOW);
-    GPIO::setup(this->io_rst, GPIO::OUT, GPIO::HIGH);
+    pinMode(this->io_rs, OUTPUT);
+    pinMode(this->io_rst, OUTPUT);
 }
 
 LCDController::~LCDController() {
-    GPIO::cleanup(this->io_rs);
-    GPIO::cleanup(this->io_rst);
+    // GPIO::cleanup(this->io_rs);
+    // GPIO::cleanup(this->io_rst);
 }
 
 void LCDController::set_cs() {
@@ -32,19 +33,19 @@ void LCDController::reset_cs() {
 }
 
 void LCDController::set_rs() {
-    GPIO::output(this->io_rs, GPIO::HIGH);
+    digitalWrite(this->io_rs, HIGH);
 }
 
 void LCDController::reset_rs() {
-    GPIO::output(this->io_rs, GPIO::LOW);
+    digitalWrite(this->io_rs, LOW);
 }
 
 void LCDController::set_rst() {
-    GPIO::output(this->io_rst, GPIO::HIGH);
+    digitalWrite(this->io_rst, HIGH);
 }
 
 void LCDController::reset_rst() {
-    GPIO::output(this->io_rst, GPIO::LOW);
+    digitalWrite(this->io_rst, LOW);
 }
 
 void LCDController::reset() {

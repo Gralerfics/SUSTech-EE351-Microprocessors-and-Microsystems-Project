@@ -1,41 +1,41 @@
 #include "spi.h"
 
-#include "JetsonGPIO.h"
+#include "wiringPi.h"
 
 SPIController::SPIController(int io_sck, int io_mosi, int io_miso) {
     this->io_sck = io_sck;
     this->io_mosi = io_mosi;
     this->io_miso = io_miso;
 
-    GPIO::setup(this->io_sck, GPIO::OUT, GPIO::LOW);
-    GPIO::setup(this->io_mosi, GPIO::OUT, GPIO::LOW);
-    GPIO::setup(this->io_miso, GPIO::IN);
+    pinMode(this->io_sck, OUTPUT);
+    pinMode(this->io_mosi, OUTPUT);
+    pinMode(this->io_miso, INPUT);
 }
 
 SPIController::~SPIController() {
-    GPIO::cleanup(this->io_sck);
-    GPIO::cleanup(this->io_mosi);
-    GPIO::cleanup(this->io_miso);
+    // GPIO::cleanup(this->io_sck);
+    // GPIO::cleanup(this->io_mosi);
+    // GPIO::cleanup(this->io_miso);
 }
 
 void SPIController::set_sck() {
-    GPIO::output(this->io_sck, GPIO::HIGH);
+    digitalWrite(this->io_sck, HIGH);
 }
 
 void SPIController::reset_sck() {
-    GPIO::output(this->io_sck, GPIO::LOW);
+    digitalWrite(this->io_sck, LOW);
 }
 
 void SPIController::set_mosi() {
-    GPIO::output(this->io_mosi, GPIO::HIGH);
+    digitalWrite(this->io_mosi, HIGH);
 }
 
 void SPIController::reset_mosi() {
-    GPIO::output(this->io_mosi, GPIO::LOW);
+    digitalWrite(this->io_mosi, LOW);
 }
 
 bool SPIController::get_miso() {
-    return GPIO::input(this->io_miso);
+    return digitalRead(this->io_miso);
 }
 
 void SPIController::send_byte(uint8_t byte) {

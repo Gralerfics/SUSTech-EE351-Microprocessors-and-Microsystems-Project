@@ -1,7 +1,7 @@
 cmake_minimum_required(VERSION 3.10)
 
 project(project)
-set(CMAKE_CXX_STANDARD 14) # JetsonGPIO seems not to work with C++11
+set(CMAKE_CXX_STANDARD 14)
 
 include_directories(
     inc
@@ -12,7 +12,7 @@ file(GLOB_RECURSE SOURCES
     "src/*.*"
 )
 
-find_package(JetsonGPIO)
+find_library(WIRINGPI_LIBRARY NAMES wiringPi)
 
-add_executable(test_spi ${SOURCES})
-target_link_libraries(test_spi JetsonGPIO::JetsonGPIO)
+add_executable(${PROJECT_NAME} ${SOURCES})
+target_link_libraries(${PROJECT_NAME} ${WIRINGPI_LIBRARY})
