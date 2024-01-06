@@ -1,14 +1,15 @@
 #include "lcd.h"
 
+#include <cstring>
 #include <chrono>
 #include <thread>
 
 #include "wiringPi.h"
 
-LCDController::LCDController(int io_rs, int io_rst, int io_sck, int io_mosi, int io_miso, int canonical_width, int canonical_height) {
+LCDController::LCDController(int io_rs, int io_rst, int spi_channel, int canonical_width, int canonical_height) {
     this->io_rs = io_rs;
     this->io_rst = io_rst;
-    this->spi = std::make_unique<SPIController>(io_sck, io_mosi, io_miso);
+    this->spi = std::make_unique<SPIController>(spi_channel);
 
     this->canonical_width = canonical_width;
     this->canonical_height = canonical_height;
@@ -22,14 +23,6 @@ LCDController::LCDController(int io_rs, int io_rst, int io_sck, int io_mosi, int
 LCDController::~LCDController() {
     // GPIO::cleanup(this->io_rs);
     // GPIO::cleanup(this->io_rst);
-}
-
-void LCDController::set_cs() {
-    // TODO
-}
-
-void LCDController::reset_cs() {
-    // TODO
 }
 
 void LCDController::set_rs() {
@@ -50,11 +43,11 @@ void LCDController::reset_rst() {
 
 void LCDController::reset() {
     this->set_rst();
-    std::this_thread::sleep_for(std::chrono::milliseconds(100));
+    std::this_thread::sleep_for(std::chrono::milliseconds(200));
     this->reset_rst();
-    std::this_thread::sleep_for(std::chrono::milliseconds(100));
+    std::this_thread::sleep_for(std::chrono::milliseconds(200));
     this->set_rst();
-    std::this_thread::sleep_for(std::chrono::milliseconds(100));
+    std::this_thread::sleep_for(std::chrono::milliseconds(200));
 }
 
 void LCDController::init() {
@@ -169,28 +162,22 @@ void LCDController::init() {
 
     this->set_direction(0);
 
-    this->canvas_clear(this->color_from_rgb(255, 255, 255));
+    this->canvas_clear(this->color_from_rgb(0, 0, 0));
 }
 
 void LCDController::send_command(uint8_t command) {
-    this->reset_cs();
     this->reset_rs();
     this->spi->send_byte(command);
-    this->set_cs();
 }
 
 void LCDController::send_data(uint8_t data) {
-    this->reset_cs();
     this->set_rs();
     this->spi->send_byte(data);
-    this->set_cs();
 }
 
 uint8_t LCDController::receive_data() {
-    this->reset_cs();
     this->set_rs();
     uint8_t data = this->spi->receive_byte();
-    this->set_cs();
     return data;
 }
 
@@ -202,10 +189,6 @@ void LCDController::write_register(uint8_t address, uint8_t data) {
 uint8_t LCDController::read_register(uint8_t address) {
     this->send_command(address);
     return this->receive_data();
-}
-
-uint16_t LCDController::get_id() {
-    // TODO
 }
 
 void LCDController::set_direction(int direction) {
@@ -257,16 +240,17 @@ void LCDController::set_cursor(uint16_t x, uint16_t y) {
     this->set_window(x, y, x, y);
 }
 
-uint16_t LCDController::color_from_rgb(uint8_t r, uint8_t g, uint8_t b) {
-    return (r << 11) | (g << 5) | b;
+uint16_t LCDController::color_from_rgb(uint8_t r, uint8_t g, uint8_t b, bool little_endian) {
+    uint16_t color = (r << 11) | (g << 5) | b;
+    if (little_endian) color = ((color & 0xFF) << 8) | ((color & 0xFF00) >> 8);
+    return color;
 }
 
 void LCDController::canvas_clear(uint16_t color) {
     this->set_window(0, 0, this->width - 1, this->height - 1);
-    this->reset_cs();
     this->set_rs();
-    for (int i = 0; i < this->width * this->height; i++) {
-        this->spi->send_word(color);
-    }
-    this->set_cs();
+    uint32_t area = this->width * this->height;
+    uint16_t data[area];
+    std::fill(data, data + area, color);
+    this->spi->send_data(reinterpret_cast<uint8_t*>(data), area * 2);
 }

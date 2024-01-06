@@ -18,9 +18,8 @@ int main(int argc, char** argv) {
 
     if (wiringPiSetupGpio() == -1) return -1;
 
-    LCDController lcd(23, 24, 11, 10, 9, 240, 320);
+    LCDController lcd(23, 24, 1, 240, 320);
     lcd.init();
-    std::cout << "Finished." << std::endl;
 
     return 0;
 }

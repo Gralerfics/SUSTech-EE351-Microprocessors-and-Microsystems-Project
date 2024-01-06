@@ -9,11 +9,9 @@
 // ILI9341
 class LCDController {
 public:
-    LCDController(int io_rs, int io_rst, int io_sck, int io_mosi, int io_miso, int canonical_width, int canonical_height);
+    LCDController(int io_rs, int io_rst, int spi_channel, int canonical_width, int canonical_height);
     ~LCDController();
 
-    void set_cs();
-    void reset_cs();
     void set_rs();
     void reset_rs();
     void set_rst();
@@ -29,14 +27,13 @@ public:
     void write_register(uint8_t address, uint8_t data);
     uint8_t read_register(uint8_t address);
 
-    uint16_t get_id();
     void set_direction(int direction); // 0, 1, 2, 3
     void enable_ram_write();
     void enable_ram_read();
     void set_window(uint16_t x0, uint16_t y0, uint16_t x1, uint16_t y1);
     void set_cursor(uint16_t x, uint16_t y);
 
-    uint16_t color_from_rgb(uint8_t r, uint8_t g, uint8_t b);
+    uint16_t color_from_rgb(uint8_t r, uint8_t g, uint8_t b, bool little_endian = true);
     void canvas_clear(uint16_t color);
 
 private:

@@ -1,6 +1,6 @@
 import time
 import smbus
-
+import RPi.GPIO as GPIO
 
 dev = smbus.SMBus(1)
 dev_addr = 0x38
