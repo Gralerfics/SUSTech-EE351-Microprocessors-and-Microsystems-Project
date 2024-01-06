@@ -1,0 +1,1 @@
+/usr/bin/aarch64-linux-gnu-g++  -g   CMakeFiles/test_spi.dir/src/main.cpp.o CMakeFiles/test_spi.dir/src/spi.cpp.o  -o test_spi -Wl,-rpath,/usr/local/lib /usr/local/lib/libJetsonGPIO.so.1.2.5 -lpthread 
