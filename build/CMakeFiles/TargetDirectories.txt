@@ -1,3 +1,0 @@
-/home/nano/MyFiles/Workspace/SUSTech-EE351-Microprocessors-and-Microsystems-Project/build/CMakeFiles/rebuild_cache.dir
-/home/nano/MyFiles/Workspace/SUSTech-EE351-Microprocessors-and-Microsystems-Project/build/CMakeFiles/test_spi.dir
-/home/nano/MyFiles/Workspace/SUSTech-EE351-Microprocessors-and-Microsystems-Project/build/CMakeFiles/edit_cache.dir
