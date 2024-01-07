@@ -27,13 +27,14 @@ public:
     void write_register(uint8_t address, uint8_t data);
     uint8_t read_register(uint8_t address);
 
-    void set_direction(int direction); // 0, 1, 2, 3
+    void set_direction(bool mx, bool my, bool mv);
     void enable_ram_write();
     void enable_ram_read();
     void set_window(uint16_t x0, uint16_t y0, uint16_t x1, uint16_t y1);
     void set_cursor(uint16_t x, uint16_t y);
 
     uint16_t color_from_rgb(uint8_t r, uint8_t g, uint8_t b, bool little_endian = true);
+    void canvas_fill(uint16_t x0, uint16_t y0, uint16_t x1, uint16_t y1, uint16_t* colors);
     void canvas_clear(uint16_t color);
 
 private:

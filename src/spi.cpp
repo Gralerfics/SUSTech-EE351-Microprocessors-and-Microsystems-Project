@@ -8,7 +8,7 @@
 SPIController::SPIController(int channel) {
     this->channel = channel;
 
-    wiringPiSPISetup(this->channel, 62500000);
+    wiringPiSPISetup(this->channel, 80000000);
 }
 
 SPIController::~SPIController() {
@@ -28,12 +28,12 @@ uint8_t SPIController::receive_byte() {
 }
 
 void SPIController::send_word(uint16_t word) {
-    this->send_data((uint8_t*)&word, 2);
+    this->send_data((uint8_t*) &word, 2);
 }
 
 uint16_t SPIController::receive_word() {
     uint16_t word = 0;
-    this->receive_data((uint8_t*)&word, 2);
+    this->receive_data((uint8_t*) &word, 2);
     return word;
 }
 
@@ -47,5 +47,6 @@ void SPIController::send_data(uint8_t* data, int length) {
 }
 
 void SPIController::receive_data(uint8_t* data, int length) {
+    // TODO
     wiringPiSPIDataRW(this->channel, data, length);
 }

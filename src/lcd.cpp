@@ -16,6 +16,7 @@ LCDController::LCDController(int io_rs, int io_rst, int spi_channel, int canonic
     this->width = canonical_width;
     this->height = canonical_height;
 
+	if (wiringPiSetupGpio() == -1) return;
     pinMode(this->io_rs, OUTPUT);
     pinMode(this->io_rst, OUTPUT);
 }
@@ -160,9 +161,9 @@ void LCDController::init() {
     std::this_thread::sleep_for(std::chrono::milliseconds(120));
     this->send_command(0x29);
 
-    this->set_direction(0);
+    this->set_direction(1, 0, 1);
 
-    this->canvas_clear(this->color_from_rgb(0, 0, 0));
+    this->canvas_clear(this->color_from_rgb(255, 255, 255));
 }
 
 void LCDController::send_command(uint8_t command) {
@@ -191,25 +192,15 @@ uint8_t LCDController::read_register(uint8_t address) {
     return this->receive_data();
 }
 
-void LCDController::set_direction(int direction) {
-    direction %= 4;
-    if (direction == 0) {
+void LCDController::set_direction(bool mx, bool my, bool mv) {
+	if (!mv) {
         this->width = this->canonical_width;
         this->height = this->canonical_height;
-        this->write_register(this->CMD_MEMORY_ACCESS_CONTROL, 0xC8); // 1100 1000
-    } else if (direction == 1) {
-        this->width = this->canonical_height;
-        this->height = this->canonical_width;
-        this->write_register(this->CMD_MEMORY_ACCESS_CONTROL, 0xE8); // 1110 1000
-    } else if (direction == 2) {
-        this->width = this->canonical_width;
-        this->height = this->canonical_height;
-        this->write_register(this->CMD_MEMORY_ACCESS_CONTROL, 0xC8); // 1100 1000
-    } else { // if (direction == 3) {
-        this->width = this->canonical_height;
-        this->height = this->canonical_width;
-        this->write_register(this->CMD_MEMORY_ACCESS_CONTROL, 0xA8); // 1010 1000
-    }
+	} else {
+		this->width = this->canonical_height;
+		this->height = this->canonical_width;
+	}
+	this->write_register(this->CMD_MEMORY_ACCESS_CONTROL, (mx << 6) | (my << 7) | (mv << 5) | 0x08);
 }
 
 void LCDController::enable_ram_write() {
@@ -246,11 +237,16 @@ uint16_t LCDController::color_from_rgb(uint8_t r, uint8_t g, uint8_t b, bool lit
     return color;
 }
 
-void LCDController::canvas_clear(uint16_t color) {
-    this->set_window(0, 0, this->width - 1, this->height - 1);
+void LCDController::canvas_fill(uint16_t x0, uint16_t y0, uint16_t x1, uint16_t y1, uint16_t* colors) {
+    this->set_window(x0, y0, x1, y1);
     this->set_rs();
+    uint32_t area = (x1 - x0 + 1) * (y1 - y0 + 1);
+    this->spi->send_data(reinterpret_cast<uint8_t*>(colors), area * 2);
+}
+
+void LCDController::canvas_clear(uint16_t color) {
     uint32_t area = this->width * this->height;
     uint16_t data[area];
     std::fill(data, data + area, color);
-    this->spi->send_data(reinterpret_cast<uint8_t*>(data), area * 2);
+    this->canvas_fill(0, 0, this->width - 1, this->height - 1, data);
 }
