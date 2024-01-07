@@ -7,20 +7,21 @@
 
 class Touchpad {
 public:
-    Touchpad(int io_int, int io_rst, int dev_addr);
+    Touchpad(int io_sda, int io_scl, int io_int, int io_rst, int dev_addr);
     ~Touchpad();
-
-    void set_rst();
-    void reset_rst();
     
     void reset();
+    void init();
 
     bool is_pressed();
     void update_points();
     // void get_position(int* x, int* y);
 
 private:
-    int io_int, io_rst;
+    void set_rst();
+    void reset_rst();
+
+    int io_sda, io_scl, io_int, io_rst;
     std::unique_ptr<I2CController> i2c = nullptr;
 
     int e1_7 = 0, e1_6 = 0, e2_7 = 0, e2_6 = 0;

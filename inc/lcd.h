@@ -12,11 +12,6 @@ public:
     LCDController(int io_rs, int io_rst, int spi_channel, int canonical_width, int canonical_height);
     ~LCDController();
 
-    void set_rs();
-    void reset_rs();
-    void set_rst();
-    void reset_rst();
-
     void reset();
     void init();
 
@@ -38,6 +33,11 @@ public:
     void canvas_clear(uint16_t color);
 
 private:
+    void set_rs();
+    void reset_rs();
+    void set_rst();
+    void reset_rst();
+
     int io_rs, io_rst;
     std::unique_ptr<SPIController> spi = nullptr;
 

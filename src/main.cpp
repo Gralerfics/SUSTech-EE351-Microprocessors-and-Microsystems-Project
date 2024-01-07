@@ -9,6 +9,7 @@
 
 #include "lvgl.h"
 #include "lv_port_disp.h"
+#include "lv_port_indev.h"
 #include "lv_demo_benchmark.h"
 
 #include "common_devices.h"
@@ -30,7 +31,7 @@ GPIOController gpio;
 
 LCDController lcd(23, 24, 1, 240, 320);
 
-Touchpad touchpad(27, 22, 0x38);
+Touchpad touchpad(14, 15, 27, 22, 0x38);
 
 int main(int argc, char** argv) {
     signal(SIGINT, sigint_handler);
@@ -39,7 +40,7 @@ int main(int argc, char** argv) {
     
     lv_init();
     lv_port_disp_init();
-    // lv_port_indev_init();
+    lv_port_indev_init();
     auto lv_ticking_future = std::async(std::launch::async, lv_ticking_func);
 
     lv_demo_benchmark();
@@ -47,8 +48,8 @@ int main(int argc, char** argv) {
     while (!is_shutdown) {
         lv_timer_handler();
 
-
-        // std::this_thread::sleep_for(std::chrono::milliseconds(10));
+        touchpad.update_points();
+        std::this_thread::sleep_for(std::chrono::milliseconds(10));
     }
 
     return 0;

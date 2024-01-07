@@ -6,10 +6,12 @@
 
 #include "common_devices.h"
 
-Touchpad::Touchpad(int io_int, int io_rst, int dev_addr) {
+Touchpad::Touchpad(int io_sda, int io_scl, int io_int, int io_rst, int dev_addr) {
+    this->io_sda = io_sda;
+    this->io_scl = io_scl;
     this->io_int = io_int;
     this->io_rst = io_rst;
-    this->i2c = std::make_unique<I2CController>(dev_addr);
+    this->i2c = std::make_unique<I2CController>(io_sda, io_scl, dev_addr);
 
     gpio.set_pin_mode(this->io_int, gpio.MODE_IN);
     gpio.set_pin_mode(this->io_rst, gpio.MODE_OUT);
@@ -36,9 +38,14 @@ void Touchpad::reset() {
     std::this_thread::sleep_for(std::chrono::milliseconds(200));
 }
 
+void Touchpad::init() {
+
+}
+
 bool Touchpad::is_pressed() {
     return gpio.read_pin(this->io_int) == gpio.STATE_LOW;
 }
+
 #include "stdio.h"
 void Touchpad::update_points() {
     uint8_t buf[16];
@@ -46,29 +53,29 @@ void Touchpad::update_points() {
     uint8_t xl1 = this->i2c->read_register_8(this->REG_P1_XL);
     uint8_t yh1 = this->i2c->read_register_8(this->REG_P1_YH);
     uint8_t yl1 = this->i2c->read_register_8(this->REG_P1_YL);
-    uint8_t xh2 = this->i2c->read_register_8(this->REG_P2_XH);
-    uint8_t xl2 = this->i2c->read_register_8(this->REG_P2_XL);
-    uint8_t yh2 = this->i2c->read_register_8(this->REG_P2_YH);
-    uint8_t yl2 = this->i2c->read_register_8(this->REG_P2_YL);
+    // uint8_t xh2 = this->i2c->read_register_8(this->REG_P2_XH);
+    // uint8_t xl2 = this->i2c->read_register_8(this->REG_P2_XL);
+    // uint8_t yh2 = this->i2c->read_register_8(this->REG_P2_YH);
+    // uint8_t yl2 = this->i2c->read_register_8(this->REG_P2_YL);
     
-    this->e1_7 = (xh1 & 0x80) >> 7;
-    this->e1_6 = (xh1 & 0x40) >> 6;
-    this->e2_7 = (xh2 & 0x80) >> 7;
-    this->e2_6 = (xh2 & 0x40) >> 6;
+    // this->e1_7 = (xh1 & 0x80) >> 7;
+    // this->e1_6 = (xh1 & 0x40) >> 6;
+    // this->e2_7 = (xh2 & 0x80) >> 7;
+    // this->e2_6 = (xh2 & 0x40) >> 6;
 
-    this->id1 = (yh1 & 0xF0) >> 4;
-    this->id2 = (yh2 & 0xF0) >> 4;
+    // this->id1 = (yh1 & 0xF0) >> 4;
+    // this->id2 = (yh2 & 0xF0) >> 4;
 
     this->x1 = ((xh1 & 0x0F) << 8) | xl1;
     this->y1 = ((yh1 & 0x0F) << 8) | yl1;
-    this->x2 = ((xh2 & 0x0F) << 8) | xl2;
-    this->y2 = ((yh2 & 0x0F) << 8) | yl2;
+    // this->x2 = ((xh2 & 0x0F) << 8) | xl2;
+    // this->y2 = ((yh2 & 0x0F) << 8) | yl2;
 
-    this->weight1 = this->i2c->read_register_8(this->REG_P1_WEIGHT);
-    this->weight2 = this->i2c->read_register_8(this->REG_P2_WEIGHT);
+    // this->weight1 = this->i2c->read_register_8(this->REG_P1_WEIGHT);
+    // this->weight2 = this->i2c->read_register_8(this->REG_P2_WEIGHT);
 
-    this->misc1 = this->i2c->read_register_8(this->REG_P1_MISC);
-    this->misc2 = this->i2c->read_register_8(this->REG_P2_MISC);
+    // this->misc1 = this->i2c->read_register_8(this->REG_P1_MISC);
+    // this->misc2 = this->i2c->read_register_8(this->REG_P2_MISC);
 
     printf("e1_7: %d, e1_6: %d, e2_7: %d, e2_6: %d\n", this->e1_7, this->e1_6, this->e2_7, this->e2_6);
     printf("id1: %d, id2: %d\n", this->id1, this->id2);
