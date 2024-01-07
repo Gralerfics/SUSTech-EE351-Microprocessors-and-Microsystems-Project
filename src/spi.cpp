@@ -2,7 +2,6 @@
 
 #include <algorithm>
 
-#include "wiringPi.h"
 #include "wiringPiSPI.h"
 
 SPIController::SPIController(int channel) {

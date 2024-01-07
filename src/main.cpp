@@ -26,6 +26,8 @@ void lv_ticking_func() {
     }
 }
 
+GPIOController gpio;
+
 LCDController lcd(23, 24, 1, 240, 320);
 
 int main(int argc, char** argv) {

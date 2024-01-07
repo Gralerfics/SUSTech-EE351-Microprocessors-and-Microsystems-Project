@@ -4,7 +4,8 @@
 #include <chrono>
 #include <thread>
 
-#include "wiringPi.h"
+// #include "wiringPi.h"
+#include "common_devices.h"
 
 LCDController::LCDController(int io_rs, int io_rst, int spi_channel, int canonical_width, int canonical_height) {
     this->io_rs = io_rs;
@@ -16,9 +17,8 @@ LCDController::LCDController(int io_rs, int io_rst, int spi_channel, int canonic
     this->width = canonical_width;
     this->height = canonical_height;
 
-	if (wiringPiSetupGpio() == -1) return;
-    pinMode(this->io_rs, OUTPUT);
-    pinMode(this->io_rst, OUTPUT);
+	gpio.set_pin_mode(this->io_rs, gpio.MODE_OUT);
+	gpio.set_pin_mode(this->io_rst, gpio.MODE_OUT);
 }
 
 LCDController::~LCDController() {
@@ -27,19 +27,19 @@ LCDController::~LCDController() {
 }
 
 void LCDController::set_rs() {
-    digitalWrite(this->io_rs, HIGH);
+	gpio.write_pin(this->io_rs, gpio.STATE_HIGH);
 }
 
 void LCDController::reset_rs() {
-    digitalWrite(this->io_rs, LOW);
+	gpio.write_pin(this->io_rs, gpio.STATE_LOW);
 }
 
 void LCDController::set_rst() {
-    digitalWrite(this->io_rst, HIGH);
+	gpio.write_pin(this->io_rst, gpio.STATE_HIGH);
 }
 
 void LCDController::reset_rst() {
-    digitalWrite(this->io_rst, LOW);
+	gpio.write_pin(this->io_rst, gpio.STATE_LOW);
 }
 
 void LCDController::reset() {

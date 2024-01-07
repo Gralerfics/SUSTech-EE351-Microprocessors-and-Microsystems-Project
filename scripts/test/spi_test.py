@@ -19,6 +19,6 @@ def spi_loopback_test(data):
 
 
 if __name__ == "__main__":
-    test_data = [0x01, 0x02, 0x03, 0x04, 0x05]
+    test_data = [0x01] * 4097
     spi_loopback_test(test_data)
 
