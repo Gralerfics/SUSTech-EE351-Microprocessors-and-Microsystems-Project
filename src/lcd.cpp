@@ -4,7 +4,6 @@
 #include <chrono>
 #include <thread>
 
-// #include "wiringPi.h"
 #include "common_devices.h"
 
 LCDController::LCDController(int io_rs, int io_rst, int spi_channel, int canonical_width, int canonical_height) {

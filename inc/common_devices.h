@@ -7,4 +7,7 @@ extern GPIOController gpio;
 #include "lcd.h"
 extern LCDController lcd;
 
+#include "ctp.h"
+extern Touchpad touchpad;
+
 #endif

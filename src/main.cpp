@@ -30,6 +30,8 @@ GPIOController gpio;
 
 LCDController lcd(23, 24, 1, 240, 320);
 
+Touchpad touchpad(27, 22, 0x38);
+
 int main(int argc, char** argv) {
     signal(SIGINT, sigint_handler);
 
@@ -44,6 +46,8 @@ int main(int argc, char** argv) {
 
     while (!is_shutdown) {
         lv_timer_handler();
+
+
         // std::this_thread::sleep_for(std::chrono::milliseconds(10));
     }
 

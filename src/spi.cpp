@@ -11,9 +11,7 @@ SPIController::SPIController(int channel) {
 }
 
 SPIController::~SPIController() {
-    // GPIO::cleanup(this->io_sck);
-    // GPIO::cleanup(this->io_mosi);
-    // GPIO::cleanup(this->io_miso);
+    // GPIO::cleanup();
 }
 
 void SPIController::send_byte(uint8_t byte) {
