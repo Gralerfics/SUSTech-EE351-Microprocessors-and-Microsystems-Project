@@ -10,7 +10,6 @@
 #include "lvgl.h"
 #include "lv_port_disp.h"
 #include "lv_port_indev.h"
-// #include "lv_demo_benchmark.h"
 #include "ui.h"
 
 #include "common_devices.h"
@@ -40,15 +39,11 @@ int main(int argc, char** argv) {
     lcd.init();
     touchpad.init();
     
-    lcd.set_direction(0, 0, 0);
-    touchpad.set_direction(0, 0, 0);
-    
     lv_init();
     lv_port_disp_init();
     lv_port_indev_init();
     auto lv_ticking_future = std::async(std::launch::async, lv_ticking_func);
 
-    // lv_demo_benchmark();
     ui_init();
 
     while (!is_shutdown) {

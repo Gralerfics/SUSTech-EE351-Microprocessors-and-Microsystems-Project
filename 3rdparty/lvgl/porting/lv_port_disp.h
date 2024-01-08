@@ -25,8 +25,8 @@ extern "C" {
 /*********************
  *      DEFINES
  *********************/
-#define LV_HOR_RES_MAX          240 // 320
-#define LV_VER_RES_MAX          320 // 240
+#define LV_HOR_RES_MAX          320
+#define LV_VER_RES_MAX          240
 #define MY_DISP_HOR_RES         LV_HOR_RES_MAX
 #define MY_DISP_VER_RES         LV_VER_RES_MAX
 #define FULL_BUFFERING
