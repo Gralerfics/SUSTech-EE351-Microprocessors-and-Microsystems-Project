@@ -31,12 +31,13 @@ GPIOController gpio;
 
 LCDController lcd(23, 24, 1, 240, 320);
 
-Touchpad touchpad(14, 15, 27, 22, 0x38);
+Touchpad touchpad(27, 22, 0x38, 240, 320);
 
 int main(int argc, char** argv) {
     signal(SIGINT, sigint_handler);
 
     lcd.init();
+    touchpad.init();
     
     lv_init();
     lv_port_disp_init();
@@ -48,7 +49,11 @@ int main(int argc, char** argv) {
     while (!is_shutdown) {
         lv_timer_handler();
 
-        touchpad.update_points();
+        // int x, y;
+        // bool p = touchpad.is_point1_pressed(true);
+        // touchpad.get_point1_xy(x, y, true);
+        // printf("touchpad_get_xy: %d, %d; %d\n", x, y, p);
+
         std::this_thread::sleep_for(std::chrono::milliseconds(10));
     }
 
