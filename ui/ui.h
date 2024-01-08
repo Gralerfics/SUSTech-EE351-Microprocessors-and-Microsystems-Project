@@ -14,20 +14,91 @@ extern "C" {
 
 #include "ui_helpers.h"
 #include "ui_events.h"
+void OpaOn_Animation(lv_obj_t * TargetObject, int delay);
+void OpaOff_Animation(lv_obj_t * TargetObject, int delay);
+void OpenTA_Animation(lv_obj_t * TargetObject, int delay);
+void CloseTA_Animation(lv_obj_t * TargetObject, int delay);
+void OpenKB_Animation(lv_obj_t * TargetObject, int delay);
+void CloseKB_Animation(lv_obj_t * TargetObject, int delay);
 // SCREEN: ui_Home
 void ui_Home_screen_init(void);
+void ui_event_Home(lv_event_t * e);
 extern lv_obj_t * ui_Home;
-extern lv_obj_t * ui_BTN_Test;
-extern lv_obj_t * ui_Test_Top;
-extern lv_obj_t * ui_Test_Top_Icon;
+extern lv_obj_t * ui_Home_Header;
+extern lv_obj_t * ui_Home_Header_Label;
+extern lv_obj_t * ui_Time_Panel;
+extern lv_obj_t * ui_Time_Label;
+extern lv_obj_t * ui_Time_Label1;
+extern lv_obj_t * ui_BTN_Sleep;
+void ui_event_BTN_Sleep_Top(lv_event_t * e);
+extern lv_obj_t * ui_BTN_Sleep_Top;
+extern lv_obj_t * ui_BTN_Sleep_Icon;
+// SCREEN: ui_Settings
+void ui_Settings_screen_init(void);
+void ui_event_Settings(lv_event_t * e);
+extern lv_obj_t * ui_Settings;
+extern lv_obj_t * ui_Settings_Header;
+extern lv_obj_t * ui_Settings_Header_Label;
+// SCREEN: ui_Date
+void ui_Date_screen_init(void);
+void ui_event_Date(lv_event_t * e);
+extern lv_obj_t * ui_Date;
+extern lv_obj_t * ui_Date_Header;
+extern lv_obj_t * ui_Date_Header_Label;
+extern lv_obj_t * ui_Calendar;
+// SCREEN: ui_Light
+void ui_Light_screen_init(void);
+void ui_event_Light(lv_event_t * e);
+extern lv_obj_t * ui_Light;
+extern lv_obj_t * ui_Light_Header;
+extern lv_obj_t * ui_Light_Header_Label;
+extern lv_obj_t * ui_BTN_Movexy;
+void ui_event_BTN_Movexy_Glow_Up(lv_event_t * e);
+extern lv_obj_t * ui_BTN_Movexy_Glow_Up;
+void ui_event_BTN_Movexy_Glow_Down(lv_event_t * e);
+extern lv_obj_t * ui_BTN_Movexy_Glow_Down;
+void ui_event_BTN_Movexy_Glow_Left(lv_event_t * e);
+extern lv_obj_t * ui_BTN_Movexy_Glow_Left;
+void ui_event_BTN_Movexy_Glow_Right(lv_event_t * e);
+extern lv_obj_t * ui_BTN_Movexy_Glow_Right;
+extern lv_obj_t * ui_BTN_Movexy_Top;
+extern lv_obj_t * ui_BTN_Movexy_Label;
+extern lv_obj_t * ui_BTN_Movexy_Icon_Up;
+extern lv_obj_t * ui_BTN_Movexy_Icon_Down;
+extern lv_obj_t * ui_BTN_Movexy_Icon_Left;
+extern lv_obj_t * ui_BTN_Movexy_Icon_Right;
+extern lv_obj_t * ui_Point_Panel;
+extern lv_obj_t * ui_Point;
+extern lv_obj_t * ui_BTN_Light;
+void ui_event_BTN_Light_Top(lv_event_t * e);
+extern lv_obj_t * ui_BTN_Light_Top;
+extern lv_obj_t * ui_BTN_Light_Icon;
+// SCREEN: ui_Todo
+void ui_Todo_screen_init(void);
+void ui_event_Todo(lv_event_t * e);
+extern lv_obj_t * ui_Todo;
+extern lv_obj_t * ui_Todo_Header;
+extern lv_obj_t * ui_Todo_Header_Label;
+extern lv_obj_t * ui_Todo_Keyboard;
+void ui_event_Todo_TextArea(lv_event_t * e);
+extern lv_obj_t * ui_Todo_TextArea;
 extern lv_obj_t * ui____initial_actions0;
 
 LV_IMG_DECLARE(ui_img_bkg_png);    // assets\bkg.png
 LV_IMG_DECLARE(ui_img_btn_print_down_png);    // assets\btn_print_down.png
 LV_IMG_DECLARE(ui_img_btn_print_top_off_png);    // assets\btn_print_top_off.png
 LV_IMG_DECLARE(ui_img_icn_stop_png);    // assets\icn_stop.png
+LV_IMG_DECLARE(ui_img_btn_pad_bottom_png);    // assets\btn_pad_bottom.png
+LV_IMG_DECLARE(ui_img_btn_pad_top_png);    // assets\btn_pad_top.png
+LV_IMG_DECLARE(ui_img_arrow_up_png);    // assets\arrow_up.png
+LV_IMG_DECLARE(ui_img_arrow_down_png);    // assets\arrow_down.png
+LV_IMG_DECLARE(ui_img_arrow_left_png);    // assets\arrow_left.png
+LV_IMG_DECLARE(ui_img_arrow_right_png);    // assets\arrow_right.png
 LV_IMG_DECLARE(ui_img_icn_time_1_png);    // assets\icn_time_1.png
 LV_IMG_DECLARE(ui_img_icn_time_2_png);    // assets\icn_time_2.png
+LV_IMG_DECLARE(ui_img_weather_1_png);    // assets\weather_1.png
+LV_IMG_DECLARE(ui_img_weather_2_png);    // assets\weather_2.png
+LV_IMG_DECLARE(ui_img_weather_3_png);    // assets\weather_3.png
 
 LV_FONT_DECLARE(ui_font_Small_Font);
 

@@ -10,12 +10,13 @@
 #include "lvgl.h"
 #include "lv_port_disp.h"
 #include "lv_port_indev.h"
+
 #include "ui.h"
+#include "ui_events.h"
 
 #include "common_devices.h"
 
 static bool is_shutdown = false;
-
 void sigint_handler(int signum) {
     is_shutdown = true;
 }
@@ -28,10 +29,32 @@ void lv_ticking_func() {
 }
 
 GPIOController gpio;
-
 LCDController lcd(23, 24, 1, 240, 320);
-
 Touchpad touchpad(27, 22, 0x38, 240, 320);
+
+void btn_sleep_clicked(lv_event_t* e) {
+    printf("Sleep button clicked\n");
+}
+
+void btn_light_clicked(lv_event_t* e) {
+    printf("Light button clicked\n");
+}
+
+void movexy_up_clicked(lv_event_t* e) {
+    printf("Up button clicked\n");
+}
+
+void movexy_down_clicked(lv_event_t* e) {
+    printf("Down button clicked\n");
+}
+
+void movexy_left_clicked(lv_event_t* e) {
+    printf("Left button clicked\n");
+}
+
+void movexy_right_clicked(lv_event_t* e) {
+    printf("Right button clicked\n");
+}
 
 int main(int argc, char** argv) {
     signal(SIGINT, sigint_handler);
