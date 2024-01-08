@@ -10,7 +10,8 @@
 #include "lvgl.h"
 #include "lv_port_disp.h"
 #include "lv_port_indev.h"
-#include "lv_demo_benchmark.h"
+// #include "lv_demo_benchmark.h"
+#include "ui.h"
 
 #include "common_devices.h"
 
@@ -39,22 +40,21 @@ int main(int argc, char** argv) {
     lcd.init();
     touchpad.init();
     
+    lcd.set_direction(0, 0, 0);
+    touchpad.set_direction(0, 0, 0);
+    
     lv_init();
     lv_port_disp_init();
     lv_port_indev_init();
     auto lv_ticking_future = std::async(std::launch::async, lv_ticking_func);
 
-    lv_demo_benchmark();
+    // lv_demo_benchmark();
+    ui_init();
 
     while (!is_shutdown) {
         lv_timer_handler();
 
-        // int x, y;
-        // bool p = touchpad.is_point1_pressed(true);
-        // touchpad.get_point1_xy(x, y, true);
-        // printf("touchpad_get_xy: %d, %d; %d\n", x, y, p);
-
-        std::this_thread::sleep_for(std::chrono::milliseconds(10));
+        // std::this_thread::sleep_for(std::chrono::milliseconds(10));
     }
 
     return 0;

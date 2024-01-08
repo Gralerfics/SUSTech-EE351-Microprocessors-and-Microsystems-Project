@@ -83,7 +83,6 @@ bool Touchpad::is_point2_pressed(bool update) {
     return this->e2_7;
 }
 
-#include "stdio.h"
 void Touchpad::get_point1_xy(int &x, int &y, bool update) {
     if (update) this->update_point1();
     x = this->x1;

@@ -8,8 +8,6 @@ set(CMAKE_CXX_STANDARD 14)
 # )
 
 include_directories(
-    inc
-    # ${LVGL_HEADERS}
     3rdparty
     3rdparty/lvgl
     3rdparty/lvgl/porting
@@ -79,12 +77,17 @@ include_directories(
     3rdparty/lvgl/src/hal
     3rdparty/lvgl/src/misc
     3rdparty/lvgl/src/widgets
+    # ${LVGL_HEADERS}
+    inc
+    ui
+    ui/components
 )
 
 file(GLOB_RECURSE SOURCES
+    "3rdparty/lvgl/*.*"
     "inc/*.*"
     "src/*.*"
-    "3rdparty/lvgl/*.*"
+    "ui/*.*"
 )
 
 find_library(WIRINGPI_LIBRARY NAMES wiringPi)
