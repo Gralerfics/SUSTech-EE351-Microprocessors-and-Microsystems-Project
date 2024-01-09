@@ -8,6 +8,7 @@ components/ui_comp_hook.c
 ui_helpers.c
 ui_events.c
 images/ui_img_bkg_png.c
+images/ui_img_cloud_png.c
 images/ui_img_btn_print_down_png.c
 images/ui_img_btn_print_top_off_png.c
 images/ui_img_icn_stop_png.c

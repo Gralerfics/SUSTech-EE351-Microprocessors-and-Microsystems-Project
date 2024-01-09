@@ -23,7 +23,8 @@ lv_obj_t * ui_Home_Header;
 lv_obj_t * ui_Home_Header_Label;
 lv_obj_t * ui_Time_Panel;
 lv_obj_t * ui_Time_Label;
-lv_obj_t * ui_Time_Label1;
+lv_obj_t * ui_Date_Label;
+lv_obj_t * ui_Weather_Image;
 lv_obj_t * ui_BTN_Sleep;
 void ui_event_BTN_Sleep_Top(lv_event_t * e);
 lv_obj_t * ui_BTN_Sleep_Top;
@@ -295,6 +296,9 @@ void ui_event_BTN_Sleep_Top(lv_event_t * e)
     lv_obj_t * target = lv_event_get_target(e);
     if(event_code == LV_EVENT_CLICKED) {
         btn_sleep_clicked(e);
+    }
+    if(event_code == LV_EVENT_DEFOCUSED) {
+        btn_sleep_defocused(e);
     }
 }
 void ui_event_Settings(lv_event_t * e)

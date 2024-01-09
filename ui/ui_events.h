@@ -11,6 +11,7 @@ extern "C" {
 #endif
 
 void btn_sleep_clicked(lv_event_t * e);
+void btn_sleep_defocused(lv_event_t * e);
 void movexy_up_clicked(lv_event_t * e);
 void movexy_down_clicked(lv_event_t * e);
 void movexy_left_clicked(lv_event_t * e);

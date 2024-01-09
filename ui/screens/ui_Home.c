@@ -55,7 +55,7 @@ void ui_Home_screen_init(void)
     ui_Time_Label = lv_label_create(ui_Time_Panel);
     lv_obj_set_width(ui_Time_Label, LV_SIZE_CONTENT);   /// 1
     lv_obj_set_height(ui_Time_Label, LV_SIZE_CONTENT);    /// 1
-    lv_obj_set_x(ui_Time_Label, 0);
+    lv_obj_set_x(ui_Time_Label, -30);
     lv_obj_set_y(ui_Time_Label, -10);
     lv_obj_set_align(ui_Time_Label, LV_ALIGN_CENTER);
     lv_label_set_text(ui_Time_Label, "19 : 56 : 23");
@@ -63,16 +63,27 @@ void ui_Home_screen_init(void)
     lv_obj_set_style_text_opa(ui_Time_Label, 255, LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_text_font(ui_Time_Label, &lv_font_montserrat_24, LV_PART_MAIN | LV_STATE_DEFAULT);
 
-    ui_Time_Label1 = lv_label_create(ui_Time_Panel);
-    lv_obj_set_width(ui_Time_Label1, LV_SIZE_CONTENT);   /// 1
-    lv_obj_set_height(ui_Time_Label1, LV_SIZE_CONTENT);    /// 1
-    lv_obj_set_x(ui_Time_Label1, 1);
-    lv_obj_set_y(ui_Time_Label1, 12);
-    lv_obj_set_align(ui_Time_Label1, LV_ALIGN_CENTER);
-    lv_label_set_text(ui_Time_Label1, "2024 / 1 / 8   Monday");
-    lv_obj_set_style_text_color(ui_Time_Label1, lv_color_hex(0xC0C3C9), LV_PART_MAIN | LV_STATE_DEFAULT);
-    lv_obj_set_style_text_opa(ui_Time_Label1, 255, LV_PART_MAIN | LV_STATE_DEFAULT);
-    lv_obj_set_style_text_font(ui_Time_Label1, &lv_font_montserrat_12, LV_PART_MAIN | LV_STATE_DEFAULT);
+    ui_Date_Label = lv_label_create(ui_Time_Panel);
+    lv_obj_set_width(ui_Date_Label, LV_SIZE_CONTENT);   /// 1
+    lv_obj_set_height(ui_Date_Label, LV_SIZE_CONTENT);    /// 1
+    lv_obj_set_x(ui_Date_Label, -30);
+    lv_obj_set_y(ui_Date_Label, 12);
+    lv_obj_set_align(ui_Date_Label, LV_ALIGN_CENTER);
+    lv_label_set_text(ui_Date_Label, "2024 / 1 / 8   Monday");
+    lv_obj_set_style_text_color(ui_Date_Label, lv_color_hex(0xC0C3C9), LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_text_opa(ui_Date_Label, 255, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_text_font(ui_Date_Label, &lv_font_montserrat_12, LV_PART_MAIN | LV_STATE_DEFAULT);
+
+    ui_Weather_Image = lv_img_create(ui_Time_Panel);
+    lv_img_set_src(ui_Weather_Image, &ui_img_cloud_png);
+    lv_obj_set_width(ui_Weather_Image, LV_SIZE_CONTENT);   /// 73
+    lv_obj_set_height(ui_Weather_Image, LV_SIZE_CONTENT);    /// 58
+    lv_obj_set_x(ui_Weather_Image, 68);
+    lv_obj_set_y(ui_Weather_Image, 0);
+    lv_obj_set_align(ui_Weather_Image, LV_ALIGN_CENTER);
+    lv_obj_add_flag(ui_Weather_Image, LV_OBJ_FLAG_ADV_HITTEST);     /// Flags
+    lv_obj_clear_flag(ui_Weather_Image, LV_OBJ_FLAG_SCROLLABLE);      /// Flags
+    lv_img_set_zoom(ui_Weather_Image, 180);
 
     ui_BTN_Sleep = lv_img_create(ui_Home);
     lv_img_set_src(ui_BTN_Sleep, &ui_img_btn_print_down_png);

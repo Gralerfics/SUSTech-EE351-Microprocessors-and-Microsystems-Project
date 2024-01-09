@@ -17,4 +17,7 @@ extern Touchpad touchpad;
 #include "pwm.h"
 extern PWMController lcd_backlight;
 
+#include "led_matrix.h"
+extern LEDMatrix led_matrix;
+
 #endif

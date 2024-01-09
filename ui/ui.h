@@ -28,7 +28,8 @@ extern lv_obj_t * ui_Home_Header;
 extern lv_obj_t * ui_Home_Header_Label;
 extern lv_obj_t * ui_Time_Panel;
 extern lv_obj_t * ui_Time_Label;
-extern lv_obj_t * ui_Time_Label1;
+extern lv_obj_t * ui_Date_Label;
+extern lv_obj_t * ui_Weather_Image;
 extern lv_obj_t * ui_BTN_Sleep;
 void ui_event_BTN_Sleep_Top(lv_event_t * e);
 extern lv_obj_t * ui_BTN_Sleep_Top;
@@ -85,6 +86,7 @@ extern lv_obj_t * ui_Todo_TextArea;
 extern lv_obj_t * ui____initial_actions0;
 
 LV_IMG_DECLARE(ui_img_bkg_png);    // assets\bkg.png
+LV_IMG_DECLARE(ui_img_cloud_png);    // assets\cloud.png
 LV_IMG_DECLARE(ui_img_btn_print_down_png);    // assets\btn_print_down.png
 LV_IMG_DECLARE(ui_img_btn_print_top_off_png);    // assets\btn_print_top_off.png
 LV_IMG_DECLARE(ui_img_icn_stop_png);    // assets\icn_stop.png

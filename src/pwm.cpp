@@ -55,5 +55,6 @@ bool PWMController::is_running() {
 }
 
 void PWMController::set_duty_cycle(int duty_cycle) {
-    this->duty_cycle.store(duty_cycle);
+    int value = std::min(std::max(duty_cycle, 0), this->max_duty_cycle);
+    this->duty_cycle.store(value);
 }
