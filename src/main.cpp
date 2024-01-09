@@ -2,6 +2,7 @@
 #include <stdio.h>
 #include <signal.h>
 #include <chrono>
+#include <ctime>
 #include <atomic>
 #include <thread>
 #include <math.h>
@@ -33,6 +34,8 @@ LCDController lcd(23, 24, 26, 1, 240, 320);
 Touchpad touchpad(27, 22, 0x38, 240, 320);
 PWMController lcd_backlight(26, 1000, 1000);
 LEDMatrix led_matrix;
+
+const char* weekday_mapping[] = {"Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"};
 
 bool is_sleeping = false;
 
@@ -99,11 +102,6 @@ int main(int argc, char** argv) {
     led_matrix.add_light(20, 1.0, -1.0, decay_coefficient);
     led_matrix.add_light(21, 1.0, 1.0, decay_coefficient);
     led_matrix.set_source(0.0, 0.0);
-    // PWMController pwm(16, 100, 1000);
-    // pwm.set_duty_cycle(20);
-    // pwm.launch();
-    // std::this_thread::sleep_for(std::chrono::milliseconds(1000));
-    // pwm.stop();
     
     lv_init();
     lv_port_disp_init();
@@ -116,7 +114,20 @@ int main(int argc, char** argv) {
     while (!is_shutdown.load()) {
         lv_timer_handler();
 
+        auto now = std::chrono::system_clock::now();
+        std::time_t currentTime = std::chrono::system_clock::to_time_t(now);
+        std::tm* localTime = std::localtime(&currentTime);
+        
+        int year = localTime->tm_year + 1900, month = localTime->tm_mon + 1, day = localTime->tm_mday, weekday = localTime->tm_wday;
+        int hour = localTime->tm_hour, minute = localTime->tm_min, second = localTime->tm_sec;
+        lv_label_set_text_fmt(ui_Time_Label, "%02d : %02d : %02d", hour, minute, second);
+        lv_label_set_text_fmt(ui_Date_Label, "%04d / %02d / %02d   %s", year, month, day, weekday_mapping[weekday]);
+        lv_calendar_set_today_date(ui_Calendar, year, month, day);
+        lv_calendar_set_showed_date(ui_Calendar, year, month);
+
         lv_obj_set_pos(ui_Point, (int) round(led_matrix.get_source_x() * 50), (int) round((-led_matrix.get_source_y()) * 50));
+
+        std::this_thread::sleep_for(std::chrono::milliseconds(10));
     }
 
     return 0;
