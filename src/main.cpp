@@ -2,7 +2,7 @@
 #include <stdio.h>
 #include <signal.h>
 #include <chrono>
-#include <future>
+#include <atomic>
 #include <thread>
 
 #include "wiringPi.h"
@@ -16,21 +16,24 @@
 
 #include "common_devices.h"
 
-static bool is_shutdown = false;
+std::atomic<bool> is_shutdown(false);
 void sigint_handler(int signum) {
-    is_shutdown = true;
+    is_shutdown.store(true);
 }
 
 void lv_ticking_func() {
-    while (!is_shutdown) {
+    while (!is_shutdown.load()) {
         lv_tick_inc(1);
         std::this_thread::sleep_for(std::chrono::milliseconds(1));
     }
 }
 
 GPIOController gpio;
-LCDController lcd(23, 24, 1, 240, 320);
+LCDController lcd(23, 24, 26, 1, 240, 320);
 Touchpad touchpad(27, 22, 0x38, 240, 320);
+PWMController lcd_backlight(26, 1000, 1000);
+
+int leds_x = 0, leds_y = 0;
 
 void btn_sleep_clicked(lv_event_t* e) {
     printf("Sleep button clicked\n");
@@ -61,18 +64,28 @@ int main(int argc, char** argv) {
 
     lcd.init();
     touchpad.init();
+    lcd_backlight.launch();
     
     lv_init();
     lv_port_disp_init();
     lv_port_indev_init();
-    auto lv_ticking_future = std::async(std::launch::async, lv_ticking_func);
+    std::thread lv_ticking_thread(lv_ticking_func);
+    lv_ticking_thread.detach();
 
     ui_init();
 
-    while (!is_shutdown) {
+    int val = 0;
+    while (!is_shutdown.load()) {
         lv_timer_handler();
 
-        // std::this_thread::sleep_for(std::chrono::milliseconds(10));
+        val += 10;
+        lcd_backlight.set_duty_cycle(val % 1000);
+        printf("PWM duty cycle: %d\n", lcd_backlight.get_duty_cycle());
+        if (val >= 5000) {
+            lcd_backlight.stop();
+        }
+
+        std::this_thread::sleep_for(std::chrono::milliseconds(10));
     }
 
     return 0;

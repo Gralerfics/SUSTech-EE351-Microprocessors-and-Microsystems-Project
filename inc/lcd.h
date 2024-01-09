@@ -9,11 +9,13 @@
 // ILI9341
 class LCDController {
 public:
-    LCDController(int io_rs, int io_rst, int spi_channel, int canonical_width, int canonical_height);
+    LCDController(int io_rs, int io_rst, int io_led, int spi_channel, int canonical_width, int canonical_height);
     ~LCDController();
 
     void reset();
     void init();
+
+    void set_brightness(int brightness);
 
     void send_command(uint8_t command);
     void send_data(uint8_t data);
@@ -38,11 +40,13 @@ private:
     void set_rst();
     void reset_rst();
 
-    int io_rs, io_rst;
+    int io_rs, io_rst, io_led;
     std::unique_ptr<SPIController> spi = nullptr;
 
     int canonical_width, canonical_height;
     int width, height;
+
+    int brightness = 100;
 
     const uint8_t CMD_COLUMN_ADDRESS_SET = 0x2A;
     const uint8_t CMD_PAGE_ADDRESS_SET = 0x2B;

@@ -6,9 +6,10 @@
 
 #include "common_devices.h"
 
-LCDController::LCDController(int io_rs, int io_rst, int spi_channel, int canonical_width, int canonical_height) {
+LCDController::LCDController(int io_rs, int io_rst, int io_led, int spi_channel, int canonical_width, int canonical_height) {
     this->io_rs = io_rs;
     this->io_rst = io_rst;
+	this->io_led = io_led;
     this->spi = std::make_unique<SPIController>(spi_channel);
 
     this->canonical_width = canonical_width;
@@ -18,6 +19,9 @@ LCDController::LCDController(int io_rs, int io_rst, int spi_channel, int canonic
 
 	gpio.set_pin_mode(this->io_rs, gpio.MODE_OUT);
 	gpio.set_pin_mode(this->io_rst, gpio.MODE_OUT);
+	gpio.set_pin_mode(this->io_led, gpio.MODE_OUT);
+
+	this->set_brightness(100);
 }
 
 LCDController::~LCDController() {
@@ -163,6 +167,11 @@ void LCDController::init() {
     this->set_direction(1, 0, 1);
 
     this->canvas_clear(this->color_from_rgb(255, 255, 255));
+}
+
+void LCDController::set_brightness(int brightness) {
+	this->brightness = brightness;
+	// TODO
 }
 
 void LCDController::send_command(uint8_t command) {
